@@ -1,0 +1,1079 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Обезьяний Арбитраж Трафика</title>
+  <style>
+    /* Основные стили */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    
+    body {
+      font-family: 'Arial', sans-serif;
+      line-height: 1.6;
+      color: #f8f9fa;
+      background-color: #121212;
+      overflow-x: hidden;
+    }
+    
+    .container {
+      width: 100%;
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 1rem;
+    }
+    
+    /* Утилиты */
+    .text-center { text-align: center; }
+    .mx-auto { margin-left: auto; margin-right: auto; }
+    .my-4 { margin-top: 1rem; margin-bottom: 1rem; }
+    .my-8 { margin-top: 2rem; margin-bottom: 2rem; }
+    .my-12 { margin-top: 3rem; margin-bottom: 3rem; }
+    .my-16 { margin-top: 4rem; margin-bottom: 4rem; }
+    .mt-2 { margin-top: 0.5rem; }
+    .mt-4 { margin-top: 1rem; }
+    .mt-8 { margin-top: 2rem; }
+    .mb-2 { margin-bottom: 0.5rem; }
+    .mb-4 { margin-bottom: 1rem; }
+    .mb-8 { margin-bottom: 2rem; }
+    .p-4 { padding: 1rem; }
+    .p-8 { padding: 2rem; }
+    .py-2 { padding-top: 0.5rem; padding-bottom: 0.5rem; }
+    .py-4 { padding-top: 1rem; padding-bottom: 1rem; }
+    .py-8 { padding-top: 2rem; padding-bottom: 2rem; }
+    .py-16 { padding-top: 4rem; padding-bottom: 4rem; }
+    .px-4 { padding-left: 1rem; padding-right: 1rem; }
+    .px-8 { padding-left: 2rem; padding-right: 2rem; }
+    
+    .flex { display: flex; }
+    .flex-col { flex-direction: column; }
+    .flex-wrap { flex-wrap: wrap; }
+    .items-center { align-items: center; }
+    .justify-center { justify-content: center; }
+    .justify-between { justify-content: space-between; }
+    .gap-4 { gap: 1rem; }
+    .gap-8 { gap: 2rem; }
+    
+    .grid { display: grid; }
+    .grid-cols-1 { grid-template-columns: repeat(1, minmax(0, 1fr)); }
+    .grid-cols-2 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .grid-cols-3 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+    
+    .rounded { border-radius: 0.25rem; }
+    .rounded-lg { border-radius: 0.5rem; }
+    .rounded-full { border-radius: 9999px; }
+    
+    .text-white { color: #ffffff; }
+    .text-gray-300 { color: #d1d5db; }
+    .text-gray-400 { color: #9ca3af; }
+    .text-yellow-400 { color: #fbbf24; }
+    .text-red-500 { color: #ef4444; }
+    .text-green-500 { color: #10b981; }
+    .text-blue-500 { color: #3b82f6; }
+    
+    .bg-gray-800 { background-color: #1f2937; }
+    .bg-gray-900 { background-color: #111827; }
+    .bg-black { background-color: #000000; }
+    .bg-blue-600 { background-color: #2563eb; }
+    .bg-red-600 { background-color: #dc2626; }
+    .bg-green-600 { background-color: #059669; }
+    .bg-purple-900 { background-color: #581c87; }
+    
+    .border { border-width: 1px; }
+    .border-gray-700 { border-color: #374151; }
+    
+    .shadow-lg { box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05); }
+    
+    .transition { transition-property: background-color, border-color, color, fill, stroke, opacity, box-shadow, transform; }
+    .duration-300 { transition-duration: 300ms; }
+    .transform { transform: translateX(0) translateY(0) rotate(0) skewX(0) skewY(0) scaleX(1) scaleY(1); }
+    .hover\:scale-105:hover { transform: scale(1.05); }
+    
+    /* Типографика */
+    h1, h2, h3, h4, h5, h6 {
+      margin-bottom: 0.5rem;
+      font-weight: 700;
+      line-height: 1.2;
+    }
+    
+    h1 { font-size: 2.5rem; }
+    h2 { font-size: 2rem; }
+    h3 { font-size: 1.75rem; }
+    h4 { font-size: 1.5rem; }
+    h5 { font-size: 1.25rem; }
+    h6 { font-size: 1rem; }
+    
+    .text-xs { font-size: 0.75rem; }
+    .text-sm { font-size: 0.875rem; }
+    .text-base { font-size: 1rem; }
+    .text-lg { font-size: 1.125rem; }
+    .text-xl { font-size: 1.25rem; }
+    .text-2xl { font-size: 1.5rem; }
+    .text-3xl { font-size: 1.875rem; }
+    .text-4xl { font-size: 2.25rem; }
+    .text-5xl { font-size: 3rem; }
+    
+    .font-bold { font-weight: 700; }
+    .font-semibold { font-weight: 600; }
+    
+    /* Компоненты */
+    .btn {
+      display: inline-block;
+      padding: 0.75rem 1.5rem;
+      font-weight: 600;
+      text-align: center;
+      text-decoration: none;
+      border-radius: 0.375rem;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+    
+    .btn-primary {
+      background-color: #2563eb;
+      color: white;
+    }
+    
+    .btn-primary:hover {
+      background-color: #1d4ed8;
+    }
+    
+    .btn-secondary {
+      background-color: #4b5563;
+      color: white;
+    }
+    
+    .btn-secondary:hover {
+      background-color: #374151;
+    }
+    
+    .btn-danger {
+      background-color: #dc2626;
+      color: white;
+    }
+    
+    .btn-danger:hover {
+      background-color: #b91c1c;
+    }
+    
+    .card {
+      background-color: #1f2937;
+      border-radius: 0.5rem;
+      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+      overflow: hidden;
+      transition: all 0.3s ease;
+    }
+    
+    .card-body {
+      padding: 1.5rem;
+    }
+    
+    .card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+    }
+    
+    .badge {
+      display: inline-block;
+      padding: 0.25rem 0.75rem;
+      font-size: 0.75rem;
+      font-weight: 600;
+      border-radius: 9999px;
+    }
+    
+    .badge-red {
+      background-color: #dc2626;
+      color: white;
+    }
+    
+    .badge-green {
+      background-color: #059669;
+      color: white;
+    }
+    
+    .badge-blue {
+      background-color: #2563eb;
+      color: white;
+    }
+    
+    .badge-yellow {
+      background-color: #fbbf24;
+      color: black;
+    }
+    
+    .navbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1rem 0;
+    }
+    
+    .navbar-brand {
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: white;
+      text-decoration: none;
+    }
+    
+    .navbar-nav {
+      display: flex;
+      list-style: none;
+      margin: 0;
+      padding: 0;
+    }
+    
+    .nav-item {
+      margin-left: 1.5rem;
+    }
+    
+    .nav-link {
+      color: #d1d5db;
+      text-decoration: none;
+      transition: color 0.3s ease;
+    }
+    
+    .nav-link:hover {
+      color: white;
+    }
+    
+    .collapse {
+      height: 0;
+      overflow: hidden;
+      transition: height 0.3s ease;
+    }
+    
+    .collapse.show {
+      height: auto;
+    }
+    
+    /* Секции */
+    .hero {
+      background: linear-gradient(135deg, #111827 0%, #581c87 100%);
+      padding: 4rem 0;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+    
+    .stats-container {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 1.5rem;
+      margin-top: 2rem;
+    }
+    
+    .stat-card {
+      background-color: rgba(31, 41, 55, 0.7);
+      padding: 1.5rem;
+      border-radius: 0.5rem;
+      text-align: center;
+    }
+    
+    .pricing-container {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 2rem;
+      margin-top: 2rem;
+    }
+    
+    .pricing-card {
+      background-color: #1f2937;
+      border-radius: 0.5rem;
+      overflow: hidden;
+      transition: transform 0.3s ease;
+    }
+    
+    .pricing-card:hover {
+      transform: translateY(-10px);
+    }
+    
+    .pricing-header {
+      background-color: #374151;
+      padding: 1.5rem;
+      text-align: center;
+    }
+    
+    .pricing-body {
+      padding: 1.5rem;
+    }
+    
+    .pricing-price {
+      font-size: 2.5rem;
+      font-weight: 700;
+      margin-bottom: 1rem;
+    }
+    
+    .pricing-features {
+      list-style: none;
+      margin-bottom: 1.5rem;
+    }
+    
+    .pricing-features li {
+      padding: 0.5rem 0;
+      border-bottom: 1px solid #374151;
+    }
+    
+    .testimonial-container {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 2rem;
+      margin-top: 2rem;
+    }
+    
+    .testimonial-card {
+      background-color: #1f2937;
+      padding: 1.5rem;
+      border-radius: 0.5rem;
+      position: relative;
+    }
+    
+    .testimonial-card::before {
+      content: """;
+      position: absolute;
+      top: 0;
+      left: 1rem;
+      font-size: 4rem;
+      color: #374151;
+      line-height: 1;
+    }
+    
+    .testimonial-content {
+      margin-top: 1rem;
+      font-style: italic;
+    }
+    
+    .testimonial-author {
+      margin-top: 1rem;
+      font-weight: 600;
+    }
+    
+    .faq-item {
+      background-color: #1f2937;
+      border-radius: 0.5rem;
+      margin-bottom: 1rem;
+      overflow: hidden;
+    }
+    
+    .faq-question {
+      padding: 1rem 1.5rem;
+      font-weight: 600;
+      cursor: pointer;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    
+    .faq-answer {
+      padding: 0 1.5rem 1rem;
+    }
+    
+    .footer {
+      background-color: #111827;
+      padding: 3rem 0;
+      text-align: center;
+    }
+    
+    /* Анимации */
+    @keyframes pulse {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.5; }
+    }
+    
+    .animate-pulse {
+      animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+    }
+    
+    @keyframes bounce {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-25px); }
+    }
+    
+    .animate-bounce {
+      animation: bounce 1s infinite;
+    }
+    
+    /* Медиа запросы */
+    @media (max-width: 768px) {
+      .container {
+        padding: 0 1.5rem;
+      }
+      
+      .grid-cols-2, .grid-cols-3 {
+        grid-template-columns: 1fr;
+      }
+      
+      .navbar {
+        flex-direction: column;
+      }
+      
+      .navbar-nav {
+        margin-top: 1rem;
+        flex-direction: column;
+        align-items: center;
+      }
+      
+      .nav-item {
+        margin: 0.5rem 0;
+      }
+      
+      h1 { font-size: 2rem; }
+      h2 { font-size: 1.75rem; }
+      h3 { font-size: 1.5rem; }
+      .text-4xl { font-size: 1.875rem; }
+      .text-5xl { font-size: 2.25rem; }
+    }
+    
+    /* Особенные стили для обезьяньих секций */
+    .monkey-section {
+      background: linear-gradient(135deg, #111827 0%, #4c1d95 100%);
+      padding: 3rem 0;
+      border-radius: 0.5rem;
+      margin-bottom: 2rem;
+    }
+    
+    .monkey-badge {
+      display: inline-block;
+      background-color: #fbbf24;
+      color: #000;
+      font-weight: 600;
+      padding: 0.25rem 0.75rem;
+      border-radius: 9999px;
+      margin-bottom: 1rem;
+    }
+    
+    .monkey-card {
+      background-color: rgba(31, 41, 55, 0.8);
+      border: 2px solid #581c87;
+      border-radius: 0.5rem;
+      padding: 1.5rem;
+      transition: all 0.3s ease;
+    }
+    
+    .monkey-card:hover {
+      transform: scale(1.03);
+      box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+    }
+    
+    .payment-form {
+      background-color: #1f2937;
+      padding: 2rem;
+      border-radius: 0.5rem;
+      max-width: 500px;
+      margin: 0 auto;
+    }
+    
+    .form-group {
+      margin-bottom: 1.5rem;
+    }
+    
+    .form-label {
+      display: block;
+      margin-bottom: 0.5rem;
+      font-weight: 600;
+    }
+    
+    .form-control {
+      width: 100%;
+      padding: 0.75rem;
+      background-color: #374151;
+      color: white;
+      border: 1px solid #4b5563;
+      border-radius: 0.375rem;
+      transition: border-color 0.3s ease;
+    }
+    
+    .form-control:focus {
+      outline: none;
+      border-color: #3b82f6;
+    }
+    
+    .progress-container {
+      height: 1rem;
+      width: 100%;
+      background-color: #374151;
+      border-radius: 9999px;
+      overflow: hidden;
+      margin: 1rem 0;
+    }
+    
+    .progress-bar {
+      height: 100%;
+      background-color: #3b82f6;
+      transition: width 0.3s ease;
+    }
+    
+    /* Диджитальный счетчик */
+    .counter {
+      font-family: 'Courier New', monospace;
+      font-weight: bold;
+      background-color: #111827;
+      padding: 0.5rem;
+      border-radius: 0.25rem;
+      display: inline-block;
+      margin: 0 0.25rem;
+      min-width: 2ch;
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
+  <!-- Навигационная панель -->
+  <nav class="navbar container">
+    <a href="#" class="navbar-brand">🐵 ОбезАрб</a>
+    <ul class="navbar-nav">
+      <li class="nav-item"><a href="#about" class="nav-link">О нас</a></li>
+      <li class="nav-item"><a href="#howto" class="nav-link">Как это работает</a></li>
+      <li class="nav-item"><a href="#secrets" class="nav-link">Обезьяньи секреты</a></li>
+      <li class="nav-item"><a href="#evolution" class="nav-link">Эволюция мартышек</a></li>
+      <li class="nav-item"><a href="#quiz" class="nav-link">Квиз</a></li>
+      <li class="nav-item"><a href="#payment" class="nav-link">Оплата</a></li>
+    </ul>
+  </nav>
+
+  <!-- Главный баннер -->
+  <section class="hero" id="home">
+    <div class="container">
+      <div class="badge-red animate-pulse my-4">
+        ВНИМАНИЕ: СЛИШКОМ ВЫГОДНО, ЧТОБЫ БЫТЬ ЗАКОННЫМ (но почему-то всё ещё работает)
+      </div>
+      <h1 class="text-4xl font-bold mb-4">Обезьяний Арбитраж Трафика</h1>
+      <p class="text-xl mb-8">Эволюционируй от обычной мартышки до Кинг-Конга в мире арбитража за 7 дней</p>
+      
+      <div class="stats-container">
+        <div class="stat-card">
+          <h3 class="text-yellow-400">127,952+</h3>
+          <p>Обезьян прошли обучение</p>
+        </div>
+        <div class="stat-card">
+          <h3 class="text-green-500">$9,786,421</h3>
+          <p>Заработано нашими учениками*</p>
+        </div>
+        <div class="stat-card">
+          <h3 class="text-blue-500">97.9%</h3>
+          <p>Эффективность стратегии**</p>
+        </div>
+      </div>
+      
+      <p class="text-xs text-gray-400 mt-4">* Включая воображаемые доходы<br>** Статистика собрана в параллельной вселенной</p>
+      
+      <a href="#payment" class="btn btn-primary mt-8">ХОЧУ СТАТЬ ОБЕЗЬЯНОЙ УСПЕХА</a>
+    </div>
+  </section>
+
+  <!-- О нас -->
+  <section class="py-16 bg-gray-900" id="about">
+    <div class="container">
+      <h2 class="text-3xl font-bold text-center mb-8">Почему именно обезьяны?</h2>
+      
+      <div class="grid grid-cols-2 gap-8">
+        <div>
+          <h3 class="text-2xl font-bold mb-4">Научный подход</h3>
+          <p class="mb-4">Согласно научным исследованиям, обезьяны обладают уникальными навыками распознавания паттернов и могут научиться нажимать на кнопки быстрее людей.</p>
+          <p>Наш метод основан на сакральных знаниях, полученных путем глубоких медитаций в горах Тибета рядом с обезьянами-шаманами.</p>
+        </div>
+        <div>
+          <h3 class="text-2xl font-bold mb-4">Принцип "Банана"</h3>
+          <p class="mb-4">Как обезьяна ищет самый спелый банан, так и наши ученики находят самые сочные источники трафика.</p>
+          <p>Мы используем уникальную методику "Царапай и Кликай", разработанную ведущими приматологами совместно с арбитражниками-рекордсменами.</p>
+        </div>
+      </div>
+      
+      <div class="text-center mt-8">
+        <div class="badge-yellow">
+          ФАКТ: 9 из 10 обезьян предпочитают наш курс бананам!
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Как это работает -->
+  <section class="py-16 bg-gray-800" id="howto">
+    <div class="container">
+      <h2 class="text-3xl font-bold text-center mb-8">Как работает обезьяний арбитраж</h2>
+      
+      <div class="grid grid-cols-3 gap-8">
+        <div class="card">
+          <div class="card-body">
+            <h3 class="text-2xl font-bold mb-4">Шаг 1: Стань обезьяной</h3>
+            <p>Первый этап — ментальная трансформация. Вы должны начать мыслить как обезьяна. Забудьте всё, чему вас учили в школе и университете.</p>
+          </div>
+        </div>
+        
+        <div class="card">
+          <div class="card-body">
+            <h3 class="text-2xl font-bold mb-4">Шаг 2: Бананизация трафика</h3>
+            <p>Научитесь превращать обычный трафик в "банановый". Используйте нашу запатентованную технологию привлечения посетителей за счёт манипуляции примитивными инстинктами.</p>
+          </div>
+        </div>
+        
+        <div class="card">
+          <div class="card-body">
+            <h3 class="text-2xl font-bold mb-4">Шаг 3: Обезьяний профит</h3>
+            <p>Наблюдайте, как деньги текут рекой! Ваш банковский счёт будет расти быстрее, чем шерсть на спине гориллы в период брачных игр.</p>
+          </div>
+        </div>
+      </div>
+      
+      <div class="text-center mt-8">
+        <p class="text-gray-400">* Результаты могут отличаться в зависимости от вашего уровня обезьяньих навыков</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Обезьяньи секреты -->
+  <section class="monkey-section" id="secrets">
+    <div class="container">
+      <div class="monkey-badge">🍌 ТОЛЬКО ДЛЯ ОБЕЗЬЯН 🍌</div>
+      <h2 class="text-3xl font-bold text-center mb-8">Секретные техники от Великих Горилл</h2>
+      
+      <div class="grid grid-cols-2 gap-8">
+        <div class="monkey-card">
+          <h3 class="text-2xl font-bold mb-4">🙈 Техника "Невидимый банан"</h3>
+          <p>Создавайте лендинги, которые видят только алгоритмы, но не модераторы рекламных сетей. Наша технология "обезьяньего камуфляжа" обманет любую систему проверки.</p>
+          <p class="text-red-500 mt-4">ВНИМАНИЕ: Использовать только при полнолунии!</p>
+        </div>
+        
+        <div class="monkey-card">
+          <h3 class="text-2xl font-bold mb-4">🙉 Метод "Не слышу проблем"</h3>
+          <p>Специальная техника игнорирования всех отказов. Показатель отказов 99%? Не проблема! Наша методика позволяет конвертировать отказы в покупки с помощью секретного кода обезьян.</p>
+          <p class="text-yellow-400 mt-4">СЕКРЕТ: Работает только с браузером "Banana Explorer"</p>
+        </div>
+      </div>
+      
+      <div class="grid grid-cols-2 gap-8 mt-8">
+        <div class="monkey-card">
+          <h3 class="text-2xl font-bold mb-4">🙊 Стратегия "Молчание — золото"</h3>
+          <p>Научитесь продавать ничего за огромные деньги. Наши обезьяны-наставники расскажут, как создавать предложения, от которых невозможно отказаться, даже если в них нет никакого смысла.</p>
+          <p class="text-blue-500 mt-4">БОНУС: Включает курс "Как продать банан без банана"</p>
+        </div>
+        
+        <div class="monkey-card">
+          <h3 class="text-2xl font-bold mb-4">🦍 Тактика "Горилла в комнате"</h3>
+          <p>Доминируйте в любой нише! Используйте принципы доминирования альфа-самца гориллы в мире арбитража. Конкуренты будут разбегаться, едва завидев вашу рекламу.</p>
+          <p class="text-green-500 mt-4">ЭКСКЛЮЗИВ: С бонусом "Стучание по груди для повышения конверсии"</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Эволюция обезьян -->
+  <section class="py-16 bg-gray-900" id="evolution">
+    <div class="container">
+      <h2 class="text-3xl font-bold text-center mb-8">Эволюция арбитражной обезьяны</h2>
+      
+      <div class="grid grid-cols-4 gap-4">
+        <div class="card">
+          <div class="card-body text-center">
+            <h3 class="text-xl font-bold mb-2">Уровень 1</h3>
+            <p class="text-5xl mb-4">🐒</p>
+            <h4 class="font-bold">Мартышка-новичок</h4>
+            <p class="text-sm mt-2">Только начинает нажимать на кнопки. Часто теряет деньги. Не умеет настраивать таргетинг.</p>
+          </div>
+        </div>
+        
+        <div class="card">
+          <div class="card-body text-center">
+            <h3 class="text-xl font-bold mb-2">Уровень 2</h3>
+            <p class="text-5xl mb-4">🐵</p>
+            <h4 class="font-bold">Шимпанзе-практик</h4>
+            <p class="text-sm mt-2">Понимает основы. Выходит в небольшой плюс. Может создать простой лендинг и настроить рекламу.</p>
+          </div>
+        </div>
+        
+        <div class="card">
+          <div class="card-body text-center">
+            <h3 class="text-xl font-bold mb-2">Уровень 3</h3>
+            <p class="text-5xl mb-4">🦧</p>
+            <h4 class="font-bold">Орангутанг-стратег</h4>
+            <p class="text-sm mt-2">Мастерски работает с разными источниками трафика. Имеет собственные стратегии. Стабильный доход.</p>
+          </div>
+        </div>
+        
+        <div class="card">
+          <div class="card-body text-center">
+            <h3 class="text-xl font-bold mb-2">Уровень 4</h3>
+            <p class="text-5xl mb-4">🦍</p>
+            <h4 class="font-bold">Горилла-магнат</h4>
+            <p class="text-sm mt-2">Легенда арбитража. Управляет командой обезьян. Доход с шестью нулями. Боты работают на автопилоте.</p>
+          </div>
+        </div>
+      </div>
+      
+      <div class="text-center mt-8">
+        <a href="#payment" class="btn btn-primary">НАЧАТЬ ЭВОЛЮЦИЮ СЕЙЧАС</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Обезьяний квиз -->
+  <section class="py-16 bg-gray-800" id="quiz">
+    <div class="container">
+      <h2 class="text-3xl font-bold text-center mb-8">Тест: какая вы обезьяна в арбитраже?</h2>
+      
+      <div class="card mb-8">
+        <div class="card-body">
+          <h3 class="text-2xl font-bold mb-4">Пройдите тест и узнайте свой потенциал</h3>
+          
+          <div class="form-group">
+            <p class="mb-2"><strong>1. Сколько времени вы готовы тратить на поиск бананов (лидов)?</strong></p>
+            <div class="flex gap-4 flex-wrap">
+              <label class="flex items-center">
+                <input type="radio" name="question1" class="mr-2"> 1-2 часа в день
+              </label>
+              <label class="flex items-center">
+                <input type="radio" name="question1" class="mr-2"> 3-5 часов в день
+              </label>
+              <label class="flex items-center">
+                <input type="radio" name="question1" class="mr-2"> 24/7, я не сплю, я арбитражу!
+              </label>
+            </div>
+          </div>
+          
+          <div class="form-group">
+            <p class="mb-2"><strong>2. Какой ваш любимый источник трафика?</strong></p>
+            <div class="flex gap-4 flex-wrap">
+              <label class="flex items-center">
+                <input type="radio" name="question2" class="mr-2"> Facebook/Instagram
+              </label>
+              <label class="flex items-center">
+                <input type="radio" name="question2" class="mr-2"> Telegram/WhatsApp
+              </label>
+              <label class="flex items-center">
+                <input type="radio" name="question2" class="mr-2"> Я использую телепатию
+              </label>
+            </div>
+          </div>
+          
+          <div class="form-group">
+            <p class="mb-2"><strong>3. Сколько денег вы готовы инвестировать в обучение?</strong></p>
+            <div class="flex gap-4 flex-wrap">
+              <label class="flex items-center">
+                <input type="radio" name="question3" class="mr-2"> До 10,000 рублей
+              </label>
+              <label class="flex items-center">
+                <input type="radio" name="question3" class="mr-2"> 10,000 - 50,000 рублей
+              </label>
+              <label class="flex items-center">
+                <input type="radio" name="question3" class="mr-2"> Все свои банановые сбережения!
+              </label>
+            </div>
+          </div>
+          
+          <button class="btn btn-primary mt-4" onclick="showQuizResult()">Узнать результат!</button>
+          
+          <div id="quizResult" style="display: none;" class="mt-4 p-4 bg-purple-900 rounded-lg">
+            <h4 class="text-xl font-bold mb-2">Ваш результат: 🦍 СУПЕР-ГОРИЛЛА!</h4>
+            <p>У вас огромный потенциал стать альфа-самцом в мире арбитража! Наш курс идеально подойдет для раскрытия ваших талантов.</p>
+            <a href="#payment" class="btn btn-primary mt-4">Начать обучение сейчас</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Отзывы -->
+  <section class="py-16 bg-gray-900">
+    <div class="container">
+      <h2 class="text-3xl font-bold text-center mb-8">Отзывы наших обезьян-выпускников</h2>
+      
+      <div class="testimonial-container">
+        <div class="testimonial-card">
+          <div class="testimonial-content">
+            "После курса я превратился из обычной мартышки в настоящую Гориллу арбитража! Теперь я зарабатываю столько бананов, что не могу их съесть!"
+          </div>
+          <div class="testimonial-author">
+            Олег, 35 лет, бывший офисный сотрудник, ныне Горилла-предприниматель
+          </div>
+        </div>
+        
+        <div class="testimonial-card">
+          <div class="testimonial-content">
+            "Раньше я думал, что арбитраж - это сложно. Но благодаря обезьяньему методу, даже моя бабушка смогла настроить прибыльную рекламную кампанию!"
+          </div>
+          <div class="testimonial-author">
+            Наталья, 42 года, мать-одиночка, сейчас Шимпанзе 3-го уровня
+          </div>
+        </div>
+        
+        <div class="testimonial-card">
+          <div class="testimonial-content">
+            "Ук ук ааа! Банан банан! $$$!!!"
+          </div>
+          <div class="testimonial-author">
+            Анонимный выпускник, который настолько погрузился в метод, что забыл человеческий язык
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Цены -->
+  <section class="py-16 bg-gray-800" id="pricing">
+    <div class="container">
+      <h2 class="text-3xl font-bold text-center mb-8">Инвестируйте в свою обезьянью эволюцию</h2>
+      
+      <div class="pricing-container">
+        <div class="pricing-card">
+          <div class="pricing-header">
+            <h3 class="text-2xl font-bold">Тариф "Мартышка"</h3>
+          </div>
+          <div class="pricing-body">
+            <div class="pricing-price">4,999 ₽</div>
+            <ul class="pricing-features">
+              <li>Базовые обезьяньи навыки</li>
+              <li>Доступ к 5 видеоурокам</li>
+              <li>Чат поддержки с мартышками</li>
+              <li>Сертификат обезьяны-новичка</li>
+            </ul>
+            <a href="#payment" class="btn btn-secondary w-full">Выбрать</a>
+          </div>
+        </div>
+        
+        <div class="pricing-card">
+          <div class="pricing-header bg-blue-600">
+            <h3 class="text-2xl font-bold">Тариф "Шимпанзе"</h3>
+            <div class="badge-yellow mt-2">Популярный</div>
+          </div>
+          <div class="pricing-body">
+            <div class="pricing-price">14,999 ₽</div>
+            <ul class="pricing-features">
+              <li>Все из тарифа "Мартышка"</li>
+              <li>15 продвинутых видеоуроков</li>
+              <li>Личный наставник-орангутанг</li>
+              <li>Секретные схемы арбитража</li>
+              <li>Генератор лендингов "Банановый рай"</li>
+            </ul>
+            <a href="#payment" class="btn btn-primary w-full">Выбрать</a>
+          </div>
+        </div>
+        
+        <div class="pricing-card">
+          <div class="pricing-header bg-purple-900">
+            <h3 class="text-2xl font-bold">Тариф "Горилла VIP"</h3>
+          </div>
+          <div class="pricing-body">
+            <div class="pricing-price">49,999 ₽</div>
+            <ul class="pricing-features">
+              <li>Все из тарифа "Шимпанзе"</li>
+              <li>Закрытый клуб альфа-горилл</li>
+              <li>Личная встреча с Кинг-Конгом</li>
+              <li>Автоматизированные боты-мартышки</li>
+              <li>Доступ к секретным офферам</li>
+              <li>Амулет удачи из шерсти гориллы</li>
+            </ul>
+            <a href="#payment" class="btn btn-primary w-full">Выбрать</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Оплата -->
+  <section class="py-16 bg-gray-900" id="payment">
+    <div class="container">
+      <h2 class="text-3xl font-bold text-center mb-8">Стань обезьяной прямо сейчас!</h2>
+      
+      <div class="payment-form">
+        <div class="form-group">
+          <label for="name" class="form-label">Ваше имя (или обезьянье прозвище)</label>
+          <input type="text" id="name" class="form-control" placeholder="Кинг Конг Иванович">
+        </div>
+        
+        <div class="form-group">
+          <label for="email" class="form-label">Email для связи</label>
+          <input type="email" id="email" class="form-control" placeholder="gorilla@banana.com">
+        </div>
+        
+        <div class="form-group">
+          <label for="phone" class="form-label">Телефон</label>
+          <input type="tel" id="phone" class="form-control" placeholder="+7 (000) 000-00-00">
+        </div>
+        
+        <div class="form-group">
+          <label for="tariff" class="form-label">Выберите тариф</label>
+          <select id="tariff" class="form-control">
+            <option value="monkey">Тариф "Мартышка" - 4,999 ₽</option>
+            <option value="chimp" selected>Тариф "Шимпанзе" - 14,999 ₽</option>
+            <option value="gorilla">Тариф "Горилла VIP" - 49,999 ₽</option>
+          </select>
+        </div>
+        
+        <div class="form-group">
+          <label for="card" class="form-label">Номер банановой карты</label>
+          <input type="text" id="card" class="form-control" placeholder="0000 0000 0000 0000">
+        </div>
+        
+        <div class="grid grid-cols-2 gap-4">
+          <div class="form-group">
+            <label for="expiry" class="form-label">Срок действия</label>
+            <input type="text" id="expiry" class="form-control" placeholder="ММ/ГГ">
+          </div>
+          
+          <div class="form-group">
+            <label for="cvv" class="form-label">CVV</label>
+            <input type="text" id="cvv" class="form-control" placeholder="000">
+          </div>
+        </div>
+        
+        <div class="form-group">
+          <label class="form-label flex items-center">
+            <input type="checkbox" id="agreement" class="mr-2">
+            Я согласен стать обезьяной и принимаю <a href="#" class="text-blue-500">условия</a>
+          </label>
+        </div>
+        
+        <button class="btn btn-danger w-full" onclick="showPaymentResult()">ОПЛАТИТЬ И СТАТЬ ОБЕЗЬЯНОЙ</button>
+        
+        <div id="paymentResult" style="display: none;" class="mt-4 p-4 bg-red-600 bg-opacity-20 rounded-lg">
+          <h4 class="text-xl font-bold mb-2">🎉 Поздравляем! 🎉</h4>
+          <p><strong>ВНИМАНИЕ:</strong> В качестве бонуса мы оформили на вас кредит в размере 1 500 000 рублей! Теперь вы точно сможете начать свой путь в арбитраже без отговорок о "нехватке денег"!</p>
+          <p class="mt-2">Первый платеж через 30 дней. Ставка: всего 49.9% годовых!</p>
+          <p class="mt-4">
+            Не благодарите нас! Это наш способ мотивировать вас достичь успеха как можно быстрее!
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FAQ -->
+  <section class="py-16 bg-gray-800">
+    <div class="container">
+      <h2 class="text-3xl font-bold text-center mb-8">Частые вопросы наших обезьян</h2>
+      
+      <div class="faq-item">
+        <div class="faq-question" onclick="toggleFaq(this)">
+          Действительно ли обезьяны лучше людей в арбитраже?
+          <span>+</span>
+        </div>
+        <div class="faq-answer" style="display: none;">
+          Согласно нашим исследованиям, обезьяны превосходят людей в арбитраже трафика на 137%. Это связано с их природной способностью быстро реагировать на изменения и находить привлекательные баннеры. К тому же, у обезьян нет моральных ограничений при создании кликбейтных заголовков.
+        </div>
+      </div>
+      
+      <div class="faq-item">
+        <div class="faq-question" onclick="toggleFaq(this)">
+          Сколько бананов я смогу заработать после курса?
+          <span>+</span>
+        </div>
+        <div class="faq-answer" style="display: none;">
+          Количество заработанных бананов напрямую зависит от вашего уровня эволюции и времени, которое вы готовы тратить на арбитраж. Наши лучшие ученики зарабатывают до 500 кг бананов в месяц (в денежном эквиваленте).
+        </div>
+      </div>
+      
+      <div class="faq-item">
+        <div class="faq-question" onclick="toggleFaq(this)">
+          Почему ваш курс стоит так дорого?
+          <span>+</span>
+        </div>
+        <div class="faq-answer" style="display: none;">
+          Наш курс включает секретные технологии, разработанные обезьянами-мудрецами, которые живут в закрытых резервациях и принимают оплату только бананами премиум-класса. К тому же, часть средств идет на поддержку заповедников и закупку новейшего оборудования для обучения обезьян программированию.
+        </div>
+      </div>
+      
+      <div class="faq-item">
+        <div class="faq-question" onclick="toggleFaq(this)">
+          Что делать, если я уже обезьяна?
+          <span>+</span>
+        </div>
+        <div class="faq-answer" style="display: none;">
+          Если вы уже биологически являетесь обезьяной, то вам положена скидка 50%! Просто пришлите нам фото вашего хвоста и морды, и наши эксперты подтвердят вашу обезьянность. Однако, помните, что быть обезьяной биологически и мыслить как обезьяна арбитража — это разные вещи.
+        </div>
+      </div>
+      
+      <div class="faq-item">
+        <div class="faq-question" onclick="toggleFaq(this)">
+          Законно ли это?
+          <span>+</span>
+        </div>
+        <div class="faq-answer" style="display: none;">
+          Согласно законодательству большинства стран, обезьянам разрешено заниматься практически всем, что не запрещено прямым текстом в законе. Поскольку законы писались людьми для людей, в них редко упоминаются обезьяны в контексте арбитража трафика. Этот правовой пробел и делает наш метод таким эффективным!
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Дисклеймер -->
+  <section class="py-8 bg-red-600 bg-opacity-20">
+    <div class="container">
+      <h3 class="text-xl font-bold text-center mb-4">⚠️ ВАЖНЫЙ ДИСКЛЕЙМЕР ⚠️</h3>
+      <p class="text-center">
+        Данный сайт является сатирическим. Все совпадения с реальными обезьянами, арбитражниками и методами случайны. Мы не несем ответственности за любые попытки стать обезьяной, как физически, так и ментально. Никакие настоящие обезьяны не были использованы при создании этого сайта.
+      </p>
+      <p class="text-center mt-2">
+        Помните: настоящие специалисты по арбитражу трафика — это люди с серьезными знаниями в маркетинге и аналитике, а не те, кто обещает вам золотые горы за 3 дня обучения.
+      </p>
+    </div>
+  </section>
+
+  <!-- Подвал -->
+  <footer class="footer">
+    <div class="container">
+      <p>© 2025 Обезьяний Арбитраж. Все права и бананы защищены.</p>
+      <p class="mt-2 text-gray-400">
+        Авторы не несут ответственности за последствия принятия финансовых решений на основе данного сатирического контента.
+      </p>
+    </div>
+  </footer>
+
+  <script>
+    // Показать результат квиза
+    function showQuizResult() {
+      document.getElementById('quizResult').style.display = 'block';
+      
+      // Прокрутка к результату
+      setTimeout(() => {
+        document.getElementById('quizResult').scrollIntoView({ behavior: 'smooth' });
+      }, 100);
+    }
+    
+    // Показать результат оплаты
+    function showPaymentResult() {
+      document.getElementById('paymentResult').style.display = 'block';
+      
+      // Прокрутка к результату
+      setTimeout(() => {
+        document.getElementById('paymentResult').scrollIntoView({ behavior: 'smooth' });
+      }, 100);
+    }
+    
+    // Переключение FAQ
+    function toggleFaq(element) {
+      const answer = element.nextElementSibling;
+      const plusMinus = element.querySelector('span');
+      
+      if (answer.style.display === 'none') {
+        answer.style.display = 'block';
+        plusMinus.textContent = '-';
+      } else {
+        answer.style.display = 'none';
+        plusMinus.textContent = '+';
+      }
+    }
+    
+    // Анимированные счетчики на главной странице
+    document.addEventListener('DOMContentLoaded', function() {
+      let userCount = 127956;
+      let moneyCount = 9786421;
+      let successRate = 97.9;
+      
+      setInterval(() => {
+        // Увеличиваем количество пользователей
+        userCount += Math.floor(Math.random() * 5);
+        document.querySelector('.stat-card:nth-child(1) h3').textContent = userCount.toLocaleString() + '+';
+        
+        // Увеличиваем количество денег
+        moneyCount += Math.floor(Math.random() * 1000);
+        document.querySelector('.stat-card:nth-child(2) h3').textContent = '$' + moneyCount.toLocaleString();
+        
+        // Меняем процент эффективности
+        successRate = Math.min(99.9, Math.max(95, successRate + (Math.random() * 0.1 - 0.05)));
+        document.querySelector('.stat-card:nth-child(3) h3').textContent = successRate.toFixed(1) + '%';
+      }, 3000);
+    });
+  </script>
+</body>
+</html>
